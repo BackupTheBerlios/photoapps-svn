@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>buildDate</key>
+	<date>2005-12-07T19:31:22Z</date>
+	<key>buildNumber</key>
+	<integer>59</integer>
+	<key>buildUser</key>
+	<string>Felix Kühne</string>
+	<key>formatVersion</key>
+	<integer>256</integer>
+	<key>productName</key>
+	<string>PhotoDwarf</string>
+</dict>
+</plist>
