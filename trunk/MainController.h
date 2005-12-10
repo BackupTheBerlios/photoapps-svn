@@ -39,6 +39,7 @@
     IBOutlet id o_setup_cancel_btn;
     IBOutlet id o_setup_fileFormat_lbl;
     IBOutlet id o_setup_fileFormat_pop;
+    IBOutlet id o_setup_fileFormat_longName_lbl;
     IBOutlet id o_setup_fileSize_lbl;
     IBOutlet id o_setup_fileSize_lbl_large;
     IBOutlet id o_setup_fileSize_lbl_small;
@@ -48,6 +49,8 @@
     
     NSOpenPanel * o_openPanel;
     NSSavePanel * o_savePanel;
+    NSOpenPanel * openFolderPanel;
+    NSArray * o_fileTypes;
     NSArray * o_files;
     BOOL setupWindowInited;
 }
@@ -63,4 +66,6 @@
 - (IBAction)showLicense:(id)sender;
 
 - (void)initSetupWindow;
+- (void)processImages;
+- (void)initArrays;
 @end
