@@ -130,7 +130,7 @@
                 NSRunAlertPanel( @"Unsupported file type",
                     @"The file you selected isn't supported by your version " \
                     "of QuickTime", @"OK", nil, nil );
-                return;
+                exit;
             } else {
                 /* we are processing multiple files. don't confront the user
                  * with dozens of error messages and skip this crappy file */
@@ -195,8 +195,10 @@
              * case */
             if( [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
             {
-                y = 1;
-                while( [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
+                /* FIXME: we are screwed for the moment and need to replace
+                 * the existing file */ 
+                /*y = 1;
+                while( y < 100 )
                 {
                     tempPath = [[[[[openFolderPanel directory] \
                         stringByAppendingString: @"/"] \
@@ -206,8 +208,11 @@
                         stringByAppendingString: [[o_fileTypes objectAtIndex: \
                             [o_setup_fileFormat_pop indexOfSelectedItem]] \
                             objectAtIndex: 2]];
+                    if(! [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
+                        exit;
                     y = (y + 1);
-                }
+                }*/
+                NSLog( @"Warning: replacing existing file!" );
             }
             [imageSavingData writeToFile: tempPath atomically: YES];
 
