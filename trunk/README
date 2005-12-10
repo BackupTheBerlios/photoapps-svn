@@ -11,13 +11,21 @@ Small Photo Applications is a small project which is going to produce multiple (
 
 PD is the first part of this collection. You can drop your files on its icon or on its window: it will ask you for the new compression method / level and saves the files to your desired location.
 ATTENTION: this doesn't work completely yet. PD is at a really early state of development, but gets better by every revision and is going to be finished by Dec 23rd.
+Known issues are mentioned in the about-box. If you encounter other problems, open a bug on the project-page or mail me directly please. Thanks for you help.
+
+
+==========================
+      How to install
+==========================
+
+Just drag and drop the application to your Applications folder.
 
 
 ==========================
         Licence
 ==========================
 
-All applications are licensed under the GNU General Public License 2 or any later version. This does basically mean that you can freely re-distribute this source-code and its resulting binaries as long as comply with that licence.
+All applications are licensed under the GNU General Public License 2 or any later version. This does basically mean that you can freely re-distribute, modify or export this source-code and its resulting binaries as long as comply with that licence.
 You can (you're encouraged to do so in fact) include the software on CDs provide with your magazine as long as include its source-code on the disk or send it on a CD to a reader on request (you can charge for the postage).
 If you create any derivative works of this software, you are expected to release them under a GPL-compatible licence and encouraged to re-contribute your changes.
 
