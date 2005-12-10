@@ -39,7 +39,6 @@
     IBOutlet id o_setup_cancel_btn;
     IBOutlet id o_setup_fileFormat_lbl;
     IBOutlet id o_setup_fileFormat_pop;
-    IBOutlet id o_setup_fileFormat_longName_lbl;
     IBOutlet id o_setup_fileSize_lbl;
     IBOutlet id o_setup_fileSize_lbl_large;
     IBOutlet id o_setup_fileSize_lbl_small;
@@ -58,7 +57,6 @@
 - (IBAction)dropAction:(id)sender;
 - (IBAction)progCancel:(id)sender;
 - (IBAction)setupCancel:(id)sender;
-- (IBAction)setupFileFormatChanged:(id)sender;
 - (IBAction)setupOkay:(id)sender;
 - (IBAction)fileOpen:(id)sender;
 - (IBAction)fileClose:(id)sender;

@@ -40,17 +40,12 @@
     NSArray * o_png;
     NSArray * o_tiff;
     /* temp. arrays storing all properties of the respective file type in the
-     * order: public name, file suffix, NSBitmapImageFileType, long name */
-    o_bmp = [NSArray arrayWithObjects: @"BMP", @"bmp", \
-        @"Device-Independent Bitmap", nil];
-    o_gif = [NSArray arrayWithObjects: @"GIF", @"gif", \
-        @"Graphics Interchange Format", nil];
-    o_jpeg = [NSArray arrayWithObjects: @"JPEG", @"jpg", \
-        @"Joint Photographic Experts Group", nil];
-    o_png = [NSArray arrayWithObjects: @"PNG", @"png", \
-        @"Portable Network Graphics", nil];
-    o_tiff = [NSArray arrayWithObjects: @"TIFF", @"tiff", \
-        @"Tagged Image File Format", nil];
+     * order: public name, file suffix */
+    o_bmp = [NSArray arrayWithObjects: @"BMP", @"bmp", nil];
+    o_gif = [NSArray arrayWithObjects: @"GIF", @"gif", nil];
+    o_jpeg = [NSArray arrayWithObjects: @"JPEG", @"jpg", nil];
+    o_png = [NSArray arrayWithObjects: @"PNG", @"png", nil];
+    o_tiff = [NSArray arrayWithObjects: @"TIFF", @"tif", nil];
     o_fileTypes = [[NSArray alloc] initWithObjects: o_bmp, o_gif, o_jpeg, \
         o_png, o_tiff, nil];
 }
@@ -62,11 +57,6 @@
 - (IBAction)setupCancel:(id)sender
 {
     [o_setup_window close];
-}
-
-- (IBAction)setupFileFormatChanged:(id)sender
-{
-    /* not needed */
 }
 
 - (IBAction)setupOkay:(id)sender
@@ -91,11 +81,11 @@
         "file(s) to"];
     [openFolderPanel setCanCreateDirectories: YES];
     [openFolderPanel setPrompt: @"Select"];
-    [openFolderPanel beginForDirectory: nil file: nil types: nil \
+    [openFolderPanel beginForDirectory: nil file: nil types: [NSArray array] \
         modelessDelegate: self didEndSelector: sel contextInfo: nil];
 }
 
-- (void)savePanelDidEnd:(NSSavePanel * )panel returnCode: (int)returnCode contextInfo: (void *)contextInfo
+- (void)savePanelDidEnd:(NSOpenPanel * )panel returnCode: (int)returnCode contextInfo: (void *)contextInfo
 {
     if( returnCode == NSOKButton )
     {
@@ -109,17 +99,21 @@
 
 - (void)processImages
 {
-    // okay, we've got all the settings, let's go finally
+    /* okay, we've got all the settings, let's go finally */
     NSImage * currentImage;
     NSImageRep * imageRep;
     NSDictionary * imageSavingProperties;
     NSData * imageSavingData;
     unsigned int x = 0;
+    int y = 0;
     NSString * tempString;
+    NSString * tempPath;
     
     /* disable the indeterminate look and enable the threaded animation */
+    [o_prog_stat_lbl setStringValue: @"Dwarfing your images..."];
     [o_prog_progBar setIndeterminate: NO];
     [o_prog_progBar setUsesThreadedAnimation: YES];
+    [o_prog_window display];
     
     while( x != [o_files count] )
     {
@@ -148,14 +142,74 @@
             imageSavingProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                 [NSNumber numberWithFloat: ([o_setup_fileSize_sld floatValue] / 100)], \
                 NSImageCompressionFactor, nil];
-            imageSavingData = [(NSBitmapImageRep *)imageRep \
-                representationUsingType: NSJPEGFileType 
+            
+            /* check to which file-format we are exporting; we need to do this
+             * like that because the representation type's constant is no valid
+             * Cocoa object */
+            if( [o_setup_fileFormat_pop titleOfSelectedItem] == @"JPEG" )
+            {
+                imageSavingData = [(NSBitmapImageRep *)imageRep \
+                    representationUsingType: NSJPEGFileType 
                              properties: imageSavingProperties];
+            } 
+            else if( [o_setup_fileFormat_pop titleOfSelectedItem] == @"GIF" )
+            {
+                imageSavingData = [(NSBitmapImageRep *)imageRep \
+                    representationUsingType: NSGIFFileType 
+                             properties: imageSavingProperties];
+            }
+            else if( [o_setup_fileFormat_pop titleOfSelectedItem] == @"BMP" )
+            {
+                imageSavingData = [(NSBitmapImageRep *)imageRep \
+                    representationUsingType: NSBMPFileType 
+                             properties: imageSavingProperties];
+            }
+            else if( [o_setup_fileFormat_pop titleOfSelectedItem] == @"PNG" )
+            {
+                imageSavingData = [(NSBitmapImageRep *)imageRep \
+                    representationUsingType: NSPNGFileType 
+                             properties: imageSavingProperties];
+            }
+            else if( [o_setup_fileFormat_pop titleOfSelectedItem] == @"TIFF" )
+            {
+                imageSavingData = [(NSBitmapImageRep *)imageRep \
+                    representationUsingType: NSTIFFFileType 
+                             properties: imageSavingProperties];
+            } else {
+                NSRunAlertPanel( @"Unsupported output file type",
+                    @"The file-format you selected isn't supported by this " \
+                    "version of this application. This needs fixing. Please " \
+                    "report that to the author(s).", @"OK", nil, nil );
+                return;
+            }
             tempString = [[NSFileManager defaultManager] displayNameAtPath: \
                 [o_files objectAtIndex: x]];
-            [imageSavingData writeToFile: [[[openFolderPanel directory] \
-                stringByAppendingString: @"/"] \
-                stringByAppendingString: tempString] atomically: YES];
+            tempPath = [[[[[openFolderPanel directory]
+                stringByAppendingString: @"/"]
+                stringByAppendingString: tempString]
+                stringByAppendingString: @"."]
+                stringByAppendingString: [[o_fileTypes objectAtIndex:
+                [o_setup_fileFormat_pop indexOfSelectedItem]] objectAtIndex: 1]];
+                
+            /* check whether a file exists yet and add an int to our name in 
+             * case */
+            if( [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
+            {
+                y = 1;
+                while( [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
+                {
+                    tempPath = [[[[[openFolderPanel directory] \
+                        stringByAppendingString: @"/"] \
+                        stringByAppendingString: tempString] \
+                        stringByAppendingString: \
+                            [[NSNumber numberWithInt: y] stringValue]] \
+                        stringByAppendingString: [[o_fileTypes objectAtIndex: \
+                            [o_setup_fileFormat_pop indexOfSelectedItem]] \
+                            objectAtIndex: 2]];
+                    y = (y + 1);
+                }
+            }
+            [imageSavingData writeToFile: tempPath atomically: YES];
 
             NSLog( [NSString stringWithFormat: @"processed file %i of %i", (x + 1), [o_files count]] );
 
@@ -163,6 +217,12 @@
             x = (x + 1);
         }
         [o_prog_progBar incrementBy: 1];
+        [o_prog_prog_lbl setStringValue: [NSString stringWithFormat: \
+            @"%i of %i files", [[NSNumber numberWithDouble: [o_prog_progBar \
+            doubleValue]] intValue], [[NSNumber numberWithDouble: \
+            [o_prog_progBar maxValue]] intValue]]];
+        [o_prog_prog_lbl display];
+        [o_prog_progBar display];
     }
 
     [o_prog_window close];
@@ -206,6 +266,8 @@
             [self initSetupWindow];
         }
 
+        if( o_files )
+            [o_files release];
         o_files = [o_openPanel filenames];
         
         [o_setup_window makeKeyAndOrderFront:nil];
@@ -225,11 +287,8 @@
     }
     
     /* FIXME: select the items as stored on last exit */
-    /* select the JPEG item and show its long name */
+    /* select the JPEG item */
     [o_setup_fileFormat_pop selectItemWithTitle: @"JPEG"];
-    // FIXME fix this crappy crap when you've got too much spare time
-    [o_setup_fileFormat_longName_lbl setStringValue: \
-        [[o_fileTypes objectAtIndex: 2] objectAtIndex: 2]];
     setupWindowInited = YES;
 }
 

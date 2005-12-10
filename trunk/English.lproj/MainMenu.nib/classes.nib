@@ -9,7 +9,6 @@
                 fileOpen = id; 
                 progCancel = id; 
                 setupCancel = id; 
-                setupFileFormatChanged = id; 
                 setupOkay = id; 
                 showLicense = id; 
             }; 
@@ -26,7 +25,6 @@
                 "o_prog_window" = id; 
                 "o_setup_cancel_btn" = id; 
                 "o_setup_fileFormat_lbl" = id; 
-                "o_setup_fileFormat_longName_lbl" = id; 
                 "o_setup_fileFormat_pop" = id; 
                 "o_setup_fileSize_lbl" = id; 
                 "o_setup_fileSize_lbl_large" = id; 
