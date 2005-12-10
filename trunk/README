@@ -1,0 +1,32 @@
+==========================
+ Small Photo Applications
+==========================
+
+Small Photo Applications is a small project which is going to produce multiple (guess what?) little applications which deal with the work on picture using Mac OS X. They are entirely written in Objective C using Xcode (currently 2.1 or later) and provided as Universal Binaries to the users.
+
+
+==========================
+        PhotoDwarf
+==========================
+
+PD is the first part of this collection. You can drop your files on its icon or on its window: it will ask you for the new compression method / level and saves the files to your desired location.
+ATTENTION: this doesn't work completely yet. PD is at a really early state of development, but gets better by every revision and is going to be finished by Dec 23rd.
+
+
+==========================
+        Licence
+==========================
+
+All applications are licensed under the GNU General Public License 2 or any later version. This does basically mean that you can freely re-distribute this source-code and its resulting binaries as long as comply with that licence.
+You can (you're encouraged to do so in fact) include the software on CDs provide with your magasine as long as include its source-code on the disk or send it on a CD to a reader on request (you can charge for the postage).
+If you create any derivative works of this software, you are aspected to release them under a GPL-compatible licence and encouraged to re-contribute your changes.
+
+
+==========================
+      Miscellaneous
+==========================
+
+All applications created by this project will be shipped with enabled localisation support and include finished localisations to American English, British English and German. If you want to add your own translation or just would like to drop me a note, feel free to mail fkuehne{at}users{dot}berlios{dot}de.
+This is obviously a free software project, but it is currently run by me, myself and I only. If you would like to join it or just would like to provide patches, you're gladly welcome. Please use the above mail-address to contact me.
+
+$Id$
