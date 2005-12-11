@@ -20,19 +20,30 @@
  *****************************************************************************/
 
 #import "MainController.h"
+#import "SPADropImageView.h"
 
 @implementation MainController
 
-- (void)dealloc
+static MainController *_o_sharedMainInstance = nil;
+
++ (MainController *)sharedInstance
 {
-    [o_openPanel release];
-    [o_savePanel release];
-    [o_files release];
-    [o_fileTypes release];
-    [super dealloc];
+    return _o_sharedMainInstance ? _o_sharedMainInstance : [[self alloc] init];
 }
 
-- (void)initArrays
+- (id)init
+{
+    if( _o_sharedMainInstance) 
+    {
+        [self dealloc];
+    } else {
+        _o_sharedMainInstance = [super init];
+    }
+
+    return _o_sharedMainInstance;
+}
+
+- (void)awakeFromNib
 {
     NSArray * o_bmp;
     NSArray * o_gif;
@@ -48,10 +59,45 @@
     o_tiff = [NSArray arrayWithObjects: @"TIFF", @"tif", nil];
     o_fileTypes = [[NSArray alloc] initWithObjects: o_bmp, o_gif, o_jpeg, \
         o_png, o_tiff, nil];
+
+    unsigned int x = 0;
+    [o_setup_fileFormat_pop removeAllItems];
+    while( x != [o_fileTypes count] )
+    {
+        [o_setup_fileFormat_pop addItemWithTitle: \
+            [[o_fileTypes objectAtIndex: x] objectAtIndex: 0]];
+        x = (x + 1);
+    }
+    
+    /* FIXME: select the items as stored on last exit */
+    /* select the JPEG item */
+    [o_setup_fileFormat_pop selectItemWithTitle: @"JPEG"];
+    inited = YES;
 }
 
-- (IBAction)dropAction:(id)sender
+- (void)dealloc
 {
+    [o_openPanel release];
+    [o_savePanel release];
+    [o_files release];
+    [o_fileTypes release];
+    [super dealloc];
+}
+
+- (id)getFiles
+{
+    return o_files;
+}
+
+- (void)setFiles:(id)sentArray
+{
+    o_files = sentArray;
+    [o_files retain];
+}
+
+- (void)showSetup
+{
+    [o_setup_window makeKeyAndOrderFront:nil];
 }
 
 - (IBAction)setupCancel:(id)sender
@@ -265,36 +311,12 @@
 {
     if( returnCode == NSOKButton )
     {
-        if(! setupWindowInited )
-        {
-            [self initArrays];
-            [self initSetupWindow];
-        }
-
         if( o_files )
             [o_files release];
         o_files = [o_openPanel filenames];
-        
-        [o_setup_window makeKeyAndOrderFront:nil];
         [o_files retain];
+        [self showSetup];
     }
-}
-
-- (void) initSetupWindow
-{
-    unsigned int x = 0;
-    [o_setup_fileFormat_pop removeAllItems];
-    while( x != [o_fileTypes count] )
-    {
-        [o_setup_fileFormat_pop addItemWithTitle: \
-            [[o_fileTypes objectAtIndex: x] objectAtIndex: 0]];
-        x = (x + 1);
-    }
-    
-    /* FIXME: select the items as stored on last exit */
-    /* select the JPEG item */
-    [o_setup_fileFormat_pop selectItemWithTitle: @"JPEG"];
-    setupWindowInited = YES;
 }
 
 - (IBAction)showLicense:(id)sender

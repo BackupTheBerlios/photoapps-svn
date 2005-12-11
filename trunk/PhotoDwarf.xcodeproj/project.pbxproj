@@ -11,6 +11,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		CCB6E2D4094C702300C85AFA /* SPADropImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB6E2D2094C702300C85AFA /* SPADropImageView.m */; };
 		CCDAB6EB090E30FF008BEE07 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCDAB6EA090E30FF008BEE07 /* MainController.m */; };
 		CCDAB6F9090E3555008BEE07 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = CCDAB6F8090E3555008BEE07 /* COPYING */; };
 		CCDAB6FB090E355E008BEE07 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CCDAB6FA090E355E008BEE07 /* Credits.rtf */; };
@@ -54,6 +55,8 @@
 		32CA4F630368D1EE00C91783 /* PhotoDwarf_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDwarf_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* PhotoDwarf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoDwarf.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCB6E2D2094C702300C85AFA /* SPADropImageView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SPADropImageView.m; sourceTree = "<group>"; };
+		CCB6E2D3094C702300C85AFA /* SPADropImageView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SPADropImageView.h; sourceTree = "<group>"; };
 		CCDAB6E9090E30FF008BEE07 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		CCDAB6EA090E30FF008BEE07 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		CCDAB6F8090E3555008BEE07 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* PhotoDwarf_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				CCB6E2D2094C702300C85AFA /* SPADropImageView.m */,
+				CCB6E2D3094C702300C85AFA /* SPADropImageView.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -240,6 +245,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				CCDAB6EB090E30FF008BEE07 /* MainController.m in Sources */,
+				CCB6E2D4094C702300C85AFA /* SPADropImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

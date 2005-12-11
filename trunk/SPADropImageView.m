@@ -22,6 +22,7 @@
  *****************************************************************************/
 
 #import "SPADropImageView.h"
+#import "MainController.h"
 
 @implementation SPADropImageView
 
@@ -66,7 +67,7 @@
 {
     /* draw method is overridden to do drop highlighing */
 
-    [super drawRect:rect];  //do the usual draw operation to display the image
+    [super drawRect: rect];  //do the usual draw operation to display the image
 
     if( highlight )
     {
@@ -100,17 +101,23 @@
 
     if([sender draggingSource]!=self)
     {
-        NSURL* fileURL;
-
-        //set the image using the best representation we can get from the pasteboard
-        if([NSImage canInitWithPasteboard: [sender draggingPasteboard]])
-            [[self image] initWithPasteboard: [sender draggingPasteboard]];
-
-        //if the drag comes from a file, set the window title to the filename
-        fileURL=[NSURL URLFromPasteboard: [sender draggingPasteboard]];
+        [[MainController sharedInstance] setFiles: \
+            [[sender draggingPasteboard] propertyListForType: NSFilenamesPboardType]];
+        
+        NSLog( [NSString stringWithFormat: @"received %i file(s)", 
+            [[[MainController sharedInstance] getFiles] count]] );
+        
+        int x = 0;
+        while( x != [[[MainController sharedInstance] getFiles] count] )
+        {
+            NSLog( [[[MainController sharedInstance] getFiles] objectAtIndex: x] );
+            x = ( x + 1 );
+        }
     }
-
-    return YES;
+    
+    [[MainController sharedInstance] showSetup];
+    
+    return NO;
 }
 
 @end

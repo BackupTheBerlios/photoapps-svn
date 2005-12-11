@@ -51,10 +51,11 @@
     NSOpenPanel * openFolderPanel;
     NSArray * o_fileTypes;
     NSArray * o_files;
-    BOOL setupWindowInited;
+    BOOL inited;
 }
 
-- (IBAction)dropAction:(id)sender;
++ (MainController *)sharedInstance;
+
 - (IBAction)progCancel:(id)sender;
 - (IBAction)setupCancel:(id)sender;
 - (IBAction)setupOkay:(id)sender;
@@ -63,7 +64,8 @@
 - (IBAction)fileNew:(id)sender;
 - (IBAction)showLicense:(id)sender;
 
-- (void)initSetupWindow;
 - (void)processImages;
-- (void)initArrays;
+- (id)getFiles;
+- (void)setFiles:(id)sentArray;
+- (void)showSetup;
 @end
