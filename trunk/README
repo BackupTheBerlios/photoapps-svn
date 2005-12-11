@@ -37,4 +37,12 @@ If you create any derivative works of this software, you are expected to release
 All applications created by this project will be shipped with enabled localisation support and include finished localisations to American English, British English and German. If you want to add your own translation or just would like to drop me a note, feel free to mail fkuehne{at}users{dot}berlios{dot}de.
 This is obviously a free software project, but it is currently run by me, myself and I only. If you would like to join it or just would like to provide patches, you're gladly welcome. Please use the above mail-address to contact me.
 
+
+==========================
+       Compilation
+==========================
+
+To compile any sub-projects you need Xcode 2.1 or higher. A basic Makefile is provided to run the compilation through a command-line, but I highly recommend you to use Xcode's GUI to do real editing. Note that this Makefile requires Xcode as well. No configuration options are necessary to compile these sources. So-called Universal Binaries are created by default.
+To simplify your and my personal work, this script enables you to create source-tarballs and binary-packages for distribution. Note that the list of files is hard-coded and needs manual editing in case you have added a file to one of the projects.
+
 $Id$
