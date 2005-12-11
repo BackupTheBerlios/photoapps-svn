@@ -108,9 +108,9 @@ static MainController *_o_sharedMainInstance = nil;
 - (IBAction)setupOkay:(id)sender
 {
     [o_setup_window close];
-    [o_prog_stat_lbl setStringValue: @"Waiting..."];
+    [o_prog_stat_lbl setStringValue: NSLocalizedString(@"Waiting...", nil)];
     [o_prog_prog_lbl setStringValue: [NSString stringWithFormat: \
-        @"Image %i of %i", 0, [o_files count]]];
+        NSLocalizedString(@"Image %i of %i", nil), 0, [o_files count]]];
     [o_prog_progBar setMaxValue: [o_files count]];
     [o_prog_progBar setDoubleValue: 0];
     [o_prog_window center];
@@ -122,11 +122,11 @@ static MainController *_o_sharedMainInstance = nil;
     [openFolderPanel setCanChooseFiles: YES];
     [openFolderPanel setResolvesAliases: YES];
     [openFolderPanel setAllowsMultipleSelection: NO];
-    [openFolderPanel setTitle: @"Choose folder"];
-    [openFolderPanel setMessage: @"Choose the folder to save your shrunked " \
-        "file(s) to"];
+    [openFolderPanel setTitle: NSLocalizedString(@"Choose Folder", nil)];
+    [openFolderPanel setMessage: NSLocalizedString(@"Choose the folder to " \
+        "save your shrunked file(s) to", nil)];
     [openFolderPanel setCanCreateDirectories: YES];
-    [openFolderPanel setPrompt: @"Select"];
+    [openFolderPanel setPrompt: NSLocalizedString(@"Select", nil)];
     [openFolderPanel beginForDirectory: nil file: nil types: [NSArray array] \
         modelessDelegate: self didEndSelector: sel contextInfo: nil];
 }
@@ -156,7 +156,8 @@ static MainController *_o_sharedMainInstance = nil;
     NSString * tempPath;
     
     /* disable the indeterminate look and enable the threaded animation */
-    [o_prog_stat_lbl setStringValue: @"Dwarfing your images..."];
+    [o_prog_stat_lbl setStringValue: 
+        NSLocalizedString(@"Shrinking your images...", nil)];
     [o_prog_progBar setIndeterminate: NO];
     [o_prog_progBar setUsesThreadedAnimation: YES];
     [o_prog_window display];
@@ -173,10 +174,11 @@ static MainController *_o_sharedMainInstance = nil;
             {
                 /* we are only processing one file, let's tell the user that his
                  * file is crap */
-                NSRunAlertPanel( @"Unsupported file type",
-                    @"The file you selected isn't supported by your version " \
-                    "of QuickTime", @"OK", nil, nil );
-                exit;
+                NSRunAlertPanel( NSLocalizedString(@"Unsupported file type",nil)
+                    , NSLocalizedString(@"The file you selected isn't " \
+                    "supported by your version of QuickTime", nil), 
+                    NSLocalizedString(@"OK", nil), nil, nil );
+                return;
             } else {
                 /* we are processing multiple files. don't confront the user
                  * with dozens of error messages and skip this crappy file */
@@ -222,7 +224,8 @@ static MainController *_o_sharedMainInstance = nil;
                     representationUsingType: NSTIFFFileType 
                              properties: imageSavingProperties];
             } else {
-                NSRunAlertPanel( @"Unsupported output file type",
+                NSRunAlertPanel( NSLocalizedString(@"Unsupported output " \
+                    "file type", nil),
                     @"The file-format you selected isn't supported by this " \
                     "version of this application. This needs fixing. Please " \
                     "report that to the author(s).", @"OK", nil, nil );
@@ -269,9 +272,9 @@ static MainController *_o_sharedMainInstance = nil;
         }
         [o_prog_progBar incrementBy: 1];
         [o_prog_prog_lbl setStringValue: [NSString stringWithFormat: \
-            @"%i of %i files", [[NSNumber numberWithDouble: [o_prog_progBar \
-            doubleValue]] intValue], [[NSNumber numberWithDouble: \
-            [o_prog_progBar maxValue]] intValue]]];
+            NSLocalizedString(@"Image %i of %i", nil), [[NSNumber \
+            numberWithDouble: [o_prog_progBar doubleValue]] intValue], \
+            [[NSNumber numberWithDouble: [o_prog_progBar maxValue]] intValue]]];
         [o_prog_prog_lbl display];
         [o_prog_progBar display];
     }
