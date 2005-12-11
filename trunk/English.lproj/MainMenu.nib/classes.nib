@@ -34,7 +34,8 @@
                 "o_setup_window" = id; 
             }; 
             SUPERCLASS = NSObject; 
-        }
+        }, 
+        {CLASS = SPADropImageView; LANGUAGE = ObjC; SUPERCLASS = NSImageView; }
     ); 
     IBVersion = 1; 
 }
