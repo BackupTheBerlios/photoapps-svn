@@ -20,7 +20,6 @@
  *****************************************************************************/
 
 #import "MainController.h"
-#import "SPADropImageView.h"
 
 @implementation MainController
 
@@ -81,8 +80,6 @@ static MainController *_o_sharedMainInstance = nil;
     [o_setup_fileSize_sld setIntValue: [o_prefs integerForKey: @"size"]];
     [o_setup_fileFormat_pop selectItemWithTitle: \
         [o_prefs stringForKey: @"format"]];
-
-    inited = YES;
 }
 
 - (void)dealloc
