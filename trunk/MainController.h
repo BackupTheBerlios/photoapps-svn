@@ -52,6 +52,7 @@
     NSArray * o_fileTypes;
     NSArray * o_files;
     BOOL inited;
+    NSUserDefaults * o_prefs;
 }
 
 + (MainController *)sharedInstance;

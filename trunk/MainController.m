@@ -38,6 +38,14 @@ static MainController *_o_sharedMainInstance = nil;
         [self dealloc];
     } else {
         _o_sharedMainInstance = [super init];
+
+        NSMutableDictionary * defaultPrefs = [NSMutableDictionary dictionary];
+        
+        [defaultPrefs setObject:[NSNumber numberWithInt:100] forKey: @"size"];
+        [defaultPrefs setObject: @"JPEG" forKey: @"format"];
+        
+        o_prefs = [[NSUserDefaults standardUserDefaults] retain];
+        [o_prefs registerDefaults: defaultPrefs];
     }
 
     return _o_sharedMainInstance;
@@ -69,9 +77,11 @@ static MainController *_o_sharedMainInstance = nil;
         x = (x + 1);
     }
     
-    /* FIXME: select the items as stored on last exit */
-    /* select the JPEG item */
-    [o_setup_fileFormat_pop selectItemWithTitle: @"JPEG"];
+    /* restore the settings from the last run */
+    [o_setup_fileSize_sld setIntValue: [o_prefs integerForKey: @"size"]];
+    [o_setup_fileFormat_pop selectItemWithTitle: \
+        [o_prefs stringForKey: @"format"]];
+
     inited = YES;
 }
 
@@ -81,6 +91,7 @@ static MainController *_o_sharedMainInstance = nil;
     [o_savePanel release];
     [o_files release];
     [o_fileTypes release];
+    [o_prefs release];
     [super dealloc];
 }
 
@@ -108,6 +119,14 @@ static MainController *_o_sharedMainInstance = nil;
 - (IBAction)setupOkay:(id)sender
 {
     [o_setup_window close];
+
+    /* save prefs */
+    [o_prefs setObject: [NSNumber numberWithInt: \
+        [o_setup_fileSize_sld intValue]] forKey: @"size"];
+    [o_prefs setObject: [o_setup_fileFormat_pop titleOfSelectedItem] \
+        forKey: @"format"];
+
+    /* show progress window */
     [o_prog_stat_lbl setStringValue: NSLocalizedString(@"Waiting...", nil)];
     [o_prog_prog_lbl setStringValue: [NSString stringWithFormat: \
         NSLocalizedString(@"Image %i of %i", nil), 0, [o_files count]]];
@@ -116,6 +135,7 @@ static MainController *_o_sharedMainInstance = nil;
     [o_prog_window center];
     [o_prog_window makeKeyAndOrderFront: nil];
 
+    /* show "save to" panel */
     SEL sel = @selector(savePanelDidEnd:returnCode:contextInfo:);
     openFolderPanel = [[NSOpenPanel alloc] init];
     [openFolderPanel setCanChooseDirectories: YES];
