@@ -22,32 +22,32 @@
 PD_VERSION = 1.0a2
 
 all:
-	echo "As you want, please stand by..."
-	echo "Compiling all projects..."
-	echo ""
-	$(MAKE) PhotoDwarf
+	@echo "--> As you want, please stand by..."
+	@echo "--> Compiling all projects..."
+	@echo ""
+	@$(MAKE) PhotoDwarf
 
 PhotoDwarf:
-	echo "Compiling PhotoDwarf..."
-	echo ""
-	xcodebuild -project PhotoDwarf.xcodeproj -configuration Deployment
+	@echo "--> Compiling PhotoDwarf..."
+	@echo ""
+	@xcodebuild -project PhotoDwarf.xcodeproj -configuration Deployment
 
 clean:
-	echo "Cleaning all targets of all projects..."
-	echo ""
-	xcodebuild clean
+	@echo "--> Cleaning all targets of all projects..."
+	@echo ""
+	@xcodebuild clean
 
 dist:
-	echo "Packaging all projects..."
-	echo ""
-	$(MAKE) PhotoDwarf-dist-src
-	$(MAKE) PhotoDwarf-dist-bin
+	@echo "--> Packaging all projects..."
+	@echo ""
+	@$(MAKE) PhotoDwarf-dist-src
+	@$(MAKE) PhotoDwarf-dist-bin
 
 PhotoDwarf-dist-src:
-	echo "Packaging PhotoDwarf's source..."
-	echo ""
+	@echo "--> Packaging PhotoDwarf's source..."
+	@echo ""
 	@if test -d tmp; then \
-		echo "Error: please remove ./tmp, it is in the way" ; \
+		@echo "Error: please remove ./tmp, it is in the way" ; \
 		exit 1 ; \
 	fi
 	mkdir tmp
@@ -59,13 +59,15 @@ PhotoDwarf-dist-src:
 	rm -rf tmp
 
 PhotoDwarf-dist-bin:
+	@echo "--> Packaging the current PhotoDwarf binary plus some docs..."
+	@echo ""
 	@if test -e "tmp"; then \
-	  echo "Error: please remove ./tmp, it is in the way"; \
+	  @echo "Error: please remove ./tmp, it is in the way"; \
 	  false; \
 	else \
-	  echo "OK."; mkdir -p "tmp"; \
+	  @echo "OK."; mkdir -p "tmp"; \
 	fi
 	cp -R "build/Deployment/PhotoDwarf.app" "tmp/PhotoDwarf.app"
 	cp README COPYING tmp/
-	extras/macosx-dmg "PhotoDwarf-${PD_VERSION}" /tmp
+	extras/macosx-dmg "PhotoDwarf-${PD_VERSION}" tmp
 	rm -Rf tmp
