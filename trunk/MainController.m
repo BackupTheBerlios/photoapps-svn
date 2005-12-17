@@ -206,7 +206,7 @@ static MainController *_o_sharedMainInstance = nil;
         currentImage = [[NSImage alloc] initWithContentsOfFile: \
             [o_files objectAtIndex: x]];
     
-        imageRep = [currentImage bestRepresentationForDevice:nil];
+        imageRep = [currentImage bestRepresentationForDevice: nil];
         if (![imageRep isKindOfClass:[NSBitmapImageRep class]])
         {
             if( [o_files count] == 1 )
@@ -306,7 +306,19 @@ static MainController *_o_sharedMainInstance = nil;
 
             NSLog( [NSString stringWithFormat: @"processed file %i of %i", (x + 1), [o_files count]] );
 
-            [currentImage release];
+            /* clean up */
+            if( currentImage )
+                [currentImage release];
+            if( imageSavingProperties )
+                [imageSavingProperties release];
+            if(imageSavingData  )
+                [imageSavingData release];
+            if( imageRep )
+                [imageRep release];
+            if( tempString )
+                [tempString release];
+            if( tempPath )
+                [tempPath release];
             x = (x + 1);
         }
         [o_prog_progBar incrementBy: 1];
