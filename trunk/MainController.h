@@ -49,7 +49,8 @@
     NSOpenPanel * o_openPanel;
     NSSavePanel * o_savePanel;
     NSOpenPanel * openFolderPanel;
-    NSArray * o_fileTypes;
+    NSArray * o_currentlyExportablefileTypes;
+    NSArray * o_useableImportFileTypes;
     NSArray * o_files;
     NSUserDefaults * o_prefs;
 }

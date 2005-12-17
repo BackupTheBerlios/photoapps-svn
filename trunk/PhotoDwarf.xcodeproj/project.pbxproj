@@ -86,6 +86,8 @@
 			children = (
 				CCDAB6E9090E30FF008BEE07 /* MainController.h */,
 				CCDAB6EA090E30FF008BEE07 /* MainController.m */,
+				CCB6E2D2094C702300C85AFA /* SPADropImageView.m */,
+				CCB6E2D3094C702300C85AFA /* SPADropImageView.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -133,8 +135,6 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* PhotoDwarf_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				CCB6E2D2094C702300C85AFA /* SPADropImageView.m */,
-				CCB6E2D3094C702300C85AFA /* SPADropImageView.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";

@@ -64,15 +64,15 @@ static MainController *_o_sharedMainInstance = nil;
     o_jpeg = [NSArray arrayWithObjects: @"JPEG", @"jpg", nil];
     o_png = [NSArray arrayWithObjects: @"PNG", @"png", nil];
     o_tiff = [NSArray arrayWithObjects: @"TIFF", @"tif", nil];
-    o_fileTypes = [[NSArray alloc] initWithObjects: o_bmp, o_gif, o_jpeg, \
+    o_currentlyExportablefileTypes = [[NSArray alloc] initWithObjects: o_bmp, o_gif, o_jpeg, \
         o_png, o_tiff, nil];
 
     unsigned int x = 0;
     [o_setup_fileFormat_pop removeAllItems];
-    while( x != [o_fileTypes count] )
+    while( x != [o_currentlyExportablefileTypes count] )
     {
         [o_setup_fileFormat_pop addItemWithTitle: \
-            [[o_fileTypes objectAtIndex: x] objectAtIndex: 0]];
+            [[o_currentlyExportablefileTypes objectAtIndex: x] objectAtIndex: 0]];
         x = (x + 1);
     }
     
@@ -80,6 +80,27 @@ static MainController *_o_sharedMainInstance = nil;
     [o_setup_fileSize_sld setIntValue: [o_prefs integerForKey: @"size"]];
     [o_setup_fileFormat_pop selectItemWithTitle: \
         [o_prefs stringForKey: @"format"]];
+
+    /* create our own list of supported file-types, since want to exclude
+     * PDFs and FAXs. We just get the supported types and remove our
+     * unsupported ones, because that's a lot quicker and cleaner than
+     * hardcoding 40+ codes. */
+
+    NSMutableArray * tempArray;
+    tempArray = [[NSMutableArray alloc] init];
+    [tempArray addObjectsFromArray: [NSImage imageFileTypes]];
+    NSArray * toBeRemovedTypes;
+    toBeRemovedTypes = [NSArray arrayWithObjects: @"FAX", @"fax", @"'PDF '",
+        @"PDF", @"pdf", nil];
+    x = 0;
+    while( x != [toBeRemovedTypes count] )
+    {
+        [tempArray removeObject: [toBeRemovedTypes objectAtIndex: x]];
+        x = (x + 1);
+    }
+
+    o_useableImportFileTypes = [[NSArray alloc] initWithArray: tempArray];
+    [tempArray release];
 }
 
 - (void)dealloc
@@ -87,7 +108,8 @@ static MainController *_o_sharedMainInstance = nil;
     [o_openPanel release];
     [o_savePanel release];
     [o_files release];
-    [o_fileTypes release];
+    [o_currentlyExportablefileTypes release];
+    [o_useableImportFileTypes release];
     [o_prefs release];
     [super dealloc];
 }
@@ -254,7 +276,7 @@ static MainController *_o_sharedMainInstance = nil;
                 stringByAppendingString: @"/"]
                 stringByAppendingString: tempString]
                 stringByAppendingString: @"."]
-                stringByAppendingString: [[o_fileTypes objectAtIndex:
+                stringByAppendingString: [[o_currentlyExportablefileTypes objectAtIndex:
                 [o_setup_fileFormat_pop indexOfSelectedItem]] objectAtIndex: 1]];
                 
             /* check whether a file exists yet and add an int to our name in 
@@ -271,7 +293,7 @@ static MainController *_o_sharedMainInstance = nil;
                         stringByAppendingString: tempString] \
                         stringByAppendingString: \
                             [[NSNumber numberWithInt: y] stringValue]] \
-                        stringByAppendingString: [[o_fileTypes objectAtIndex: \
+                        stringByAppendingString: [[o_currentlyExportablefileTypes objectAtIndex: \
                             [o_setup_fileFormat_pop indexOfSelectedItem]] \
                             objectAtIndex: 2]];
                     if(! [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
@@ -323,7 +345,7 @@ static MainController *_o_sharedMainInstance = nil;
     [o_openPanel setResolvesAliases: YES];
     [o_openPanel setAllowsMultipleSelection: YES];
     [o_openPanel beginForDirectory: nil file: nil types: \
-        [NSImage imageFileTypes] modelessDelegate: self didEndSelector: sel \
+        o_useableImportFileTypes modelessDelegate: self didEndSelector: sel \
         contextInfo: nil];
 }
 
