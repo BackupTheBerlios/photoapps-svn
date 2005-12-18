@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 # ###########################################################################
 
-PD_VERSION = 1.0a2
+PD_VERSION = 1.0b1
 
 all:
 	@echo "--> As you want, please stand by..."
