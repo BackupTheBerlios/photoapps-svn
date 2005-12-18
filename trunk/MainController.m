@@ -191,6 +191,7 @@ static MainController *_o_sharedMainInstance = nil;
     NSData * imageSavingData;
     unsigned int x = 0;
     int y = 0;
+    BOOL exit = NO;
     NSString * tempString;
     NSString * tempPath;
     
@@ -301,35 +302,29 @@ static MainController *_o_sharedMainInstance = nil;
                     y = (y + 1);
                 }
             }
-            tempPath = [[[[[openFolderPanel directory]
-                stringByAppendingString: @"/"]
-                stringByAppendingString: tempString]
-                stringByAppendingString: @"."]
-                stringByAppendingString: [[o_currentlyExportablefileTypes objectAtIndex:
+            tempPath = [[openFolderPanel directory] 
+                stringByAppendingFormat: @"/%@.%@", tempString,
+                [[o_currentlyExportablefileTypes objectAtIndex:
                 [o_setup_fileFormat_pop indexOfSelectedItem]] objectAtIndex: 1]];
                 
             /* check whether a file exists yet and add an int to our name in 
-             * case */
+             * that case */
             if( [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
             {
-                /* FIXME: we are screwed for the moment and need to replace
-                 * the existing file */ 
-                /*y = 1;
-                while( y < 100 )
+                y = 1;
+                exit = NO;
+                while( y < 10 && exit == NO )
                 {
-                    tempPath = [[[[[openFolderPanel directory] \
-                        stringByAppendingString: @"/"] \
-                        stringByAppendingString: tempString] \
-                        stringByAppendingString: \
-                            [[NSNumber numberWithInt: y] stringValue]] \
-                        stringByAppendingString: [[o_currentlyExportablefileTypes objectAtIndex: \
+                    tempPath = [[openFolderPanel directory] \
+                        stringByAppendingFormat: @"/%@.%i.%@", \
+                        tempString, y, \
+                        [[o_currentlyExportablefileTypes objectAtIndex: \
                             [o_setup_fileFormat_pop indexOfSelectedItem]] \
-                            objectAtIndex: 2]];
+                            objectAtIndex: 1]];
                     if(! [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
-                        exit;
+                        exit = YES;
                     y = (y + 1);
-                }*/
-                NSLog( @"Warning: replacing existing file!" );
+                }
             }
             [imageSavingData writeToFile: tempPath atomically: YES];
 
