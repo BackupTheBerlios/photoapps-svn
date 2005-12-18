@@ -223,7 +223,6 @@ static MainController *_o_sharedMainInstance = nil;
                  * with dozens of error messages and skip this crappy file */
                 NSLog( [NSString stringWithFormat: @"skipped file %i", (x + 1)] );
                 [currentImage release];
-                x = (x + 1);
             }
         } else {
             imageSavingProperties = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -270,8 +269,38 @@ static MainController *_o_sharedMainInstance = nil;
                     "report that to the author(s).", @"OK", nil, nil );
                 return;
             }
-            tempString = [[NSFileManager defaultManager] displayNameAtPath: \
-                [o_files objectAtIndex: x]];
+
+            /* check whether the file got an extension which needs to be 
+             * stripped */
+            if(! [[[NSFileManager defaultManager] fileAttributesAtPath:
+                [o_files objectAtIndex: x] traverseLink: YES] objectForKey:
+                NSFileExtensionHidden] )
+            {
+                tempString = [[NSFileManager defaultManager] \
+                    displayNameAtPath: [o_files objectAtIndex: x]];
+            }
+            else
+            {
+                NSArray * tempArray = [[[NSFileManager defaultManager] \
+                    displayNameAtPath: [o_files objectAtIndex: x]] \
+                    componentsSeparatedByString: @"."];
+                y = 0;
+                tempString = @"";
+                while( y != ([tempArray count] - 1) )
+                {
+                    if( y > 0 )
+                    {
+                        tempString = [tempString stringByAppendingFormat: 
+                            @".%@", [tempArray objectAtIndex: y]];
+                    }
+                    else
+                    {
+                        tempString = [tempString stringByAppendingString:
+                            [tempArray objectAtIndex: y]];
+                    }
+                    y = (y + 1);
+                }
+            }
             tempPath = [[[[[openFolderPanel directory]
                 stringByAppendingString: @"/"]
                 stringByAppendingString: tempString]
@@ -305,21 +334,6 @@ static MainController *_o_sharedMainInstance = nil;
             [imageSavingData writeToFile: tempPath atomically: YES];
 
             NSLog( [NSString stringWithFormat: @"processed file %i of %i", (x + 1), [o_files count]] );
-
-            /* clean up */
-            if( currentImage )
-                [currentImage release];
-            if( imageSavingProperties )
-                [imageSavingProperties release];
-            if(imageSavingData  )
-                [imageSavingData release];
-            if( imageRep )
-                [imageRep release];
-            if( tempString )
-                [tempString release];
-            if( tempPath )
-                [tempPath release];
-            x = (x + 1);
         }
         [o_prog_progBar incrementBy: 1];
         [o_prog_prog_lbl setStringValue: [NSString stringWithFormat: \
@@ -328,6 +342,8 @@ static MainController *_o_sharedMainInstance = nil;
             [[NSNumber numberWithDouble: [o_prog_progBar maxValue]] intValue]]];
         [o_prog_prog_lbl display];
         [o_prog_progBar display];
+        [currentImage release];
+        x = (x + 1);
     }
 
     [o_prog_window close];
