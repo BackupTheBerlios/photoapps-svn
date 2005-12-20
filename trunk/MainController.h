@@ -67,6 +67,7 @@
 
 - (void)processImages;
 - (id)getFiles;
+- (void)setUseableImportFileTypes:(id)sentArray;
 - (void)setFiles:(id)sentArray;
 - (void)showSetup;
 @end

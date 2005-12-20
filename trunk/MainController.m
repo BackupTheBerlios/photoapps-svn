@@ -45,62 +45,39 @@ static MainController *_o_sharedMainInstance = nil;
         
         o_prefs = [[NSUserDefaults standardUserDefaults] retain];
         [o_prefs registerDefaults: defaultPrefs];
+        
+        NSArray * o_bmp;
+        NSArray * o_gif;
+        NSArray * o_jpeg;
+        NSArray * o_png;
+        NSArray * o_tiff;
+        /* temp. arrays storing all properties of the respective file type in 
+         * the order: public name, file suffix */
+        o_bmp = [NSArray arrayWithObjects: @"BMP", @"bmp", nil];
+        o_gif = [NSArray arrayWithObjects: @"GIF", @"gif", nil];
+        o_jpeg = [NSArray arrayWithObjects: @"JPEG", @"jpg", nil];
+        o_png = [NSArray arrayWithObjects: @"PNG", @"png", nil];
+        o_tiff = [NSArray arrayWithObjects: @"TIFF", @"tif", nil];
+        o_currentlyExportablefileTypes = [[NSArray alloc] initWithObjects: \
+            o_bmp, o_gif, o_jpeg, o_png, o_tiff, nil];
+
+        unsigned int x = 0;
+        [o_setup_fileFormat_pop removeAllItems];
+        while( x != [o_currentlyExportablefileTypes count] )
+        {
+            [o_setup_fileFormat_pop addItemWithTitle: \
+                [[o_currentlyExportablefileTypes objectAtIndex: x] \
+                objectAtIndex: 0]];
+            x = (x + 1);
+        }
+    
+        /* restore the settings from the last run */
+        [o_setup_fileSize_sld setIntValue: [o_prefs integerForKey: @"size"]];
+        [o_setup_fileFormat_pop selectItemWithTitle: \
+            [o_prefs stringForKey: @"format"]];
     }
 
     return _o_sharedMainInstance;
-}
-
-- (void)awakeFromNib
-{
-    NSArray * o_bmp;
-    NSArray * o_gif;
-    NSArray * o_jpeg;
-    NSArray * o_png;
-    NSArray * o_tiff;
-    /* temp. arrays storing all properties of the respective file type in the
-     * order: public name, file suffix */
-    o_bmp = [NSArray arrayWithObjects: @"BMP", @"bmp", nil];
-    o_gif = [NSArray arrayWithObjects: @"GIF", @"gif", nil];
-    o_jpeg = [NSArray arrayWithObjects: @"JPEG", @"jpg", nil];
-    o_png = [NSArray arrayWithObjects: @"PNG", @"png", nil];
-    o_tiff = [NSArray arrayWithObjects: @"TIFF", @"tif", nil];
-    o_currentlyExportablefileTypes = [[NSArray alloc] initWithObjects: o_bmp, o_gif, o_jpeg, \
-        o_png, o_tiff, nil];
-
-    unsigned int x = 0;
-    [o_setup_fileFormat_pop removeAllItems];
-    while( x != [o_currentlyExportablefileTypes count] )
-    {
-        [o_setup_fileFormat_pop addItemWithTitle: \
-            [[o_currentlyExportablefileTypes objectAtIndex: x] objectAtIndex: 0]];
-        x = (x + 1);
-    }
-    
-    /* restore the settings from the last run */
-    [o_setup_fileSize_sld setIntValue: [o_prefs integerForKey: @"size"]];
-    [o_setup_fileFormat_pop selectItemWithTitle: \
-        [o_prefs stringForKey: @"format"]];
-
-    /* create our own list of supported file-types, since want to exclude
-     * PDFs and FAXs. We just get the supported types and remove our
-     * unsupported ones, because that's a lot quicker and cleaner than
-     * hardcoding 40+ codes. */
-
-    NSMutableArray * tempArray;
-    tempArray = [[NSMutableArray alloc] init];
-    [tempArray addObjectsFromArray: [NSImage imageFileTypes]];
-    NSArray * toBeRemovedTypes;
-    toBeRemovedTypes = [NSArray arrayWithObjects: @"FAX", @"fax", @"'PDF '",
-        @"PDF", @"pdf", nil];
-    x = 0;
-    while( x != [toBeRemovedTypes count] )
-    {
-        [tempArray removeObject: [toBeRemovedTypes objectAtIndex: x]];
-        x = (x + 1);
-    }
-
-    o_useableImportFileTypes = [[NSArray alloc] initWithArray: tempArray];
-    [tempArray release];
 }
 
 - (void)dealloc
@@ -112,6 +89,12 @@ static MainController *_o_sharedMainInstance = nil;
     [o_useableImportFileTypes release];
     [o_prefs release];
     [super dealloc];
+}
+
+- (void)setUseableImportFileTypes:(id)sentArray
+{
+    o_useableImportFileTypes = sentArray;
+    [o_useableImportFileTypes retain];
 }
 
 - (id)getFiles

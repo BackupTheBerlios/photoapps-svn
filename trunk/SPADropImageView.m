@@ -32,8 +32,30 @@
 
     if( self=[super initWithCoder: coder] )
     {
+        /* create our own list of supported file-types, since want to exclude
+         * PDFs and FAXs. We just get the supported types and remove our
+         * unsupported ones, because that's a lot quicker and cleaner than
+         * hardcoding 40+ codes. */
+
+        NSMutableArray * tempArray;
+        unsigned int x = 0;
+        tempArray = [[NSMutableArray alloc] init];
+        [tempArray addObjectsFromArray: [NSImage imageFileTypes]];
+        NSArray * toBeRemovedTypes;
+        toBeRemovedTypes = [NSArray arrayWithObjects: @"FAX", @"fax", @"'PDF '",
+            @"PDF", @"pdf", nil];
+        x = 0;
+        while( x != [toBeRemovedTypes count] )
+        {
+            [tempArray removeObject: [toBeRemovedTypes objectAtIndex: x]];
+            x = (x + 1);
+        }
+        [[MainController sharedInstance] setUseableImportFileTypes: tempArray];
+        
         //register for all the image types we can display
-        [self registerForDraggedTypes:[NSImage imagePasteboardTypes]];
+        [self registerForDraggedTypes: tempArray];
+    
+        [tempArray release];
     }
     return self;
 }
