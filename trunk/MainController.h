@@ -47,7 +47,6 @@
     IBOutlet id o_setup_window;
     
     NSOpenPanel * o_openPanel;
-    NSSavePanel * o_savePanel;
     NSOpenPanel * openFolderPanel;
     NSArray * o_currentlyExportablefileTypes;
     NSArray * o_useableImportFileTypes;
