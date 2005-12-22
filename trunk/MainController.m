@@ -98,6 +98,8 @@ static MainController *_o_sharedMainInstance = nil;
 
 - (void)setUseableImportFileTypes:(id)sentArray
 {
+	if( o_useableImportFileTypes )
+		[o_useableImportFileTypes release];
     o_useableImportFileTypes = sentArray;
     [o_useableImportFileTypes retain];
 }
@@ -109,6 +111,8 @@ static MainController *_o_sharedMainInstance = nil;
 
 - (void)setFiles:(id)sentArray
 {
+	if( o_files )
+		[o_files release];
     o_files = sentArray;
     [o_files retain];
 }
@@ -270,11 +274,13 @@ static MainController *_o_sharedMainInstance = nil;
                 [o_files objectAtIndex: x] traverseLink: YES] objectForKey:
                 NSFileExtensionHidden] )
             {
+				/* no extension there */
                 tempString = [[NSFileManager defaultManager] \
                     displayNameAtPath: [o_files objectAtIndex: x]];
             }
             else
             {
+				/* let's strip it */
                 NSArray * tempArray = [[[NSFileManager defaultManager] \
                     displayNameAtPath: [o_files objectAtIndex: x]] \
                     componentsSeparatedByString: @"."];
@@ -295,13 +301,15 @@ static MainController *_o_sharedMainInstance = nil;
                     y = (y + 1);
                 }
             }
+
+			/* compose our path */
             tempPath = [[openFolderPanel directory] 
                 stringByAppendingFormat: @"/%@.%@", tempString,
                 [[o_currentlyExportablefileTypes objectAtIndex:
                 [o_setup_fileFormat_pop indexOfSelectedItem]] objectAtIndex: 1]];
                 
-            /* check whether a file exists yet and add an int to our name in 
-             * that case */
+            /* check whether a file exists at our path yet and add an int to 
+			 * our name in that case */
             if( [[NSFileManager defaultManager] fileExistsAtPath: tempPath] )
             {
                 y = 1;
@@ -318,6 +326,20 @@ static MainController *_o_sharedMainInstance = nil;
                         exit = YES;
                     y = (y + 1);
                 }
+
+				if( y == 10 )
+				{
+					/* stop this and warn the user of her existing files */
+					NSBeginInformationalAlertSheet( NSLocalizedString( \
+						@"Existing files", nil), NSLocalizedString(@"OK", nil), \
+						@"", @"", o_prog_window, nil, nil, nil, nil, \
+		                NSLocalizedString(@"There are files in your target " \
+						"folder which appear to have the same name as your " \
+						"input files.\n\n Please move them out of your target "\
+						" folder or choose another target to prevent data looses.", nil));
+					[o_prog_window close];
+					return;
+				}
             }
             [imageSavingData writeToFile: tempPath atomically: YES];
 
