@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MainController.m: MainController class. Does everything atm.
  *****************************************************************************
- * Copyright (C) Felix KŸhne, 2005
+ * Copyright (C) Felix KŸhne, 2005-2006
  * $Id$
  *
  * This program is free software; you can redistribute it and/or modify

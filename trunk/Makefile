@@ -1,7 +1,7 @@
 # ###########################################################################
 # Makefile: make the binary and the source package
 # ###########################################################################
-# Copyright (C) Felix KŸhne, 2005
+# Copyright (C) Felix KŸhne, 2005-2006
 # $Id$
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 # ###########################################################################
 
-PD_VERSION = 1.0b1
+PD_VERSION = 1.0
 
 all:
 	@echo "--> As you want, please stand by..."
